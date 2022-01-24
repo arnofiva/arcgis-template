@@ -1,0 +1,28 @@
+{
+  "name": "arcgis-boilerplate",
+  "version": "1.0.0",
+  "description": "A boilerplate for web apps with ArcGIS API for JavaScript, Calcite components and React. Built with Vite.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/RalucaNicola/arcgis-template.git"
+  },
+  "keywords": [
+    "arcgis-js",
+    "calcite",
+    "react",
+    "vite"
+  ],
+  "author": "Raluca Nicola",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RalucaNicola/arcgis-template/issues"
+  },
+  "homepage": "https://github.com/RalucaNicola/arcgis-template#readme",
+  "devDependencies": {
+    "vite": "^2.7.13"
+  }
+}
