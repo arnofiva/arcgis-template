@@ -6,3 +6,10 @@
   height: 100%;
   width: 100%;
 }
+
+.card {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  max-width: 300px;
+}

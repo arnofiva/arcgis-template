@@ -4,6 +4,12 @@ import { useEffect, useRef } from 'react';
 import MapView from "@arcgis/core/views/MapView";
 import WebMap from "@arcgis/core/WebMap";
 
+import "@esri/calcite-components/dist/components/calcite-card";
+import {
+  CalciteCard
+} from "@esri/calcite-components-react";
+import "@esri/calcite-components/dist/calcite/calcite.css";
+
 export function App() {
 
   const mapDiv = useRef(null);
@@ -17,7 +23,7 @@ export function App() {
         }
       });
 
-      const view = new MapView({
+      new MapView({
         container: mapDiv.current,
         map: webmap
       });
@@ -25,7 +31,21 @@ export function App() {
     }
   }, []);
 
-  return (<div className={styles.mapDiv} ref={mapDiv}></div>);
+  return (
+    <>
+      <div className={styles.mapDiv} ref={mapDiv}></div>
+      <CalciteCard className={styles.card}>
+        <img
+          alt="footer thumbnail"
+          slot="thumbnail"
+          src="./assets/image.jpg"
+        />
+        <h3 slot="title">A beautiful hiking day</h3>
+        <span slot="subtitle">Seealpsee region, Switzerland</span>
+        <span slot="footer-leading">June 20, 2021</span>
+      </CalciteCard>
+    </>
+  );
 }
 
 export default App;
