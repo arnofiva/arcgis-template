@@ -1,8 +1,8 @@
 import * as styles from './App.module.css';
 
 import { useEffect, useRef } from 'react';
-import MapView from "@arcgis/core/views/MapView";
-import WebMap from "@arcgis/core/WebMap";
+import SceneView from "@arcgis/core/views/SceneView";
+import WebScene from "@arcgis/core/WebScene";
 
 import "@esri/calcite-components/dist/components/calcite-card";
 import {
@@ -17,15 +17,15 @@ export function App() {
   useEffect(() => {
     if (mapDiv.current) {
 
-      const webmap = new WebMap({
+      const webscene = new WebScene({
         portalItem: {
-          id: "aa1d3f80270146208328cf66d022e09c"
+          id: "1616213768fd4418905da6b1f3af9591"
         }
       });
 
-      new MapView({
+      new SceneView({
         container: mapDiv.current,
-        map: webmap
+        map: webscene
       });
 
     }
