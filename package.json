@@ -23,6 +23,11 @@
   },
   "homepage": "https://github.com/RalucaNicola/arcgis-template#readme",
   "devDependencies": {
+    "@vitejs/plugin-react": "^1.1.4",
     "vite": "^2.7.13"
+  },
+  "dependencies": {
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
   }
 }
