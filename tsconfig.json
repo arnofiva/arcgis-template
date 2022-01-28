@@ -25,6 +25,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "outDir": "dist/js",
     "importHelpers": true,
+    "skipLibCheck": true
   },
   "include": [
     "./src/**/*",
