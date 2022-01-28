@@ -4,20 +4,17 @@ import { useEffect, useRef } from 'react';
 import SceneView from '@arcgis/core/views/SceneView';
 import WebScene from '@arcgis/core/WebScene';
 
-import '@esri/calcite-components/dist/components/calcite-card';
 import { CalciteCard } from '@esri/calcite-components-react';
-import '@esri/calcite-components/dist/calcite/calcite.css';
+import { useAppState } from '../AppState';
 
 export function App() {
   const mapDiv = useRef(null);
 
+  const { state } = useAppState();
+
   useEffect(() => {
     if (mapDiv.current) {
-      const webscene = new WebScene({
-        portalItem: {
-          id: '1616213768fd4418905da6b1f3af9591'
-        }
-      });
+      const webscene = new WebScene(state.webScene);
 
       new SceneView({
         container: mapDiv.current,
