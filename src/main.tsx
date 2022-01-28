@@ -4,6 +4,8 @@ import { App } from './components';
 import { AppStateProvider } from './AppState';
 import './global.css';
 
+import '@esri/calcite-components/dist/calcite/calcite.css';
+
 ReactDOM.render(
   <React.StrictMode>
     <AppStateProvider>

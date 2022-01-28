@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import SceneView from '@arcgis/core/views/SceneView';
 import WebScene from '@arcgis/core/WebScene';
 
+import '@esri/calcite-components/dist/components/calcite-card';
 import { CalciteCard } from '@esri/calcite-components-react';
 import { useAppState } from '../AppState';
 
