@@ -6,27 +6,19 @@ import WebScene from '@arcgis/core/WebScene';
 
 import '@esri/calcite-components/dist/components/calcite-card';
 import { CalciteCard } from '@esri/calcite-components-react';
-import { useAppState } from '../AppState';
+import { useAppState } from './AppState';
+import Scene from '../Scene/Scene';
+import { SceneProvider, useScene } from '../Scene/SceneProvider';
 
 export function App() {
-  const mapDiv = useRef(null);
+  // const { state } = useScene();
 
-  const { state } = useAppState();
-
-  useEffect(() => {
-    if (mapDiv.current) {
-      const webscene = new WebScene(state.webScene);
-
-      new SceneView({
-        container: mapDiv.current,
-        map: webscene
-      });
-    }
-  }, []);
+  // useEffect(() => {}, [state]);
 
   return (
     <>
-      <div className={styles.mapDiv} ref={mapDiv}></div>
+      <p>View: {'Ready?'}</p>
+      <Scene></Scene>
       <CalciteCard className={styles.card}>
         <img alt='footer thumbnail' slot='thumbnail' src='./assets/image.jpg' />
         <h3 slot='title'>A beautiful hiking day</h3>
