@@ -1,7 +1,7 @@
 
 .overlayGlobe {
-  width: 300px;
-  height: 300px;
+  width: max(20vh, 20vw);
+  height: max(20vh, 20vw);
 }
 
 .overlayGlobe canvas {

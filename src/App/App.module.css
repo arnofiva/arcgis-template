@@ -25,5 +25,5 @@
 
 .globeDiv {
   box-shadow: none !important;
-  pointer-events: none;
+  pointer-events: none !important;
 }
