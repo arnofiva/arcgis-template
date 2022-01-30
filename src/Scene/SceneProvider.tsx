@@ -3,11 +3,11 @@ import { createContext, useContext, useReducer } from 'react';
 import SceneView from '@arcgis/core/views/SceneView';
 import Map from '@arcgis/core/Map';
 
-export interface SceneProviderProps {
+interface SceneProviderProps {
   map?: Map | __esri.MapProperties;
 }
 
-export interface ISceneContext {
+interface ISceneContext {
   view: SceneView | null;
   map: Map | __esri.MapProperties;
 }
@@ -20,7 +20,7 @@ const defaultContext: ISceneContext = {
   }
 };
 
-export type Action = { type: 'INITIALIZE'; view: SceneView } | { type: 'DESTROY' };
+type Action = { type: 'INITIALIZE'; view: SceneView } | { type: 'DESTROY' };
 
 type Dispatch = (action: Action) => void;
 
@@ -40,29 +40,23 @@ const reducer = (state: ISceneContext, action: Action): ISceneContext => {
   }
 };
 
-export const SceneContext = createContext<{ state: ISceneContext; dispatch: Dispatch } | undefined>(
-  //   {
-  //   state: defaultContext,
-  //   dispatch: () => {}
-  // }
-  undefined
-);
+const SceneContext = createContext<{ state: ISceneContext; dispatch: Dispatch } | undefined>(undefined);
 
-export const SceneProvider: React.FC<SceneProviderProps> = (props) => {
+const SceneProvider: React.FC<SceneProviderProps> = (props) => {
   const map = props.map || defaultContext.map;
 
-  debugger;
   const [state, dispatch] = useReducer(reducer, { ...defaultContext, map });
   const value = { state, dispatch };
   return <SceneContext.Provider value={value}>{props.children}</SceneContext.Provider>;
 };
 
-export function useScene() {
-  debugger;
-
+function useScene() {
   const ctx = useContext(SceneContext);
   if (ctx === undefined) {
     throw new Error('useScene must be used within a SceneProvider');
   }
   return ctx;
 }
+
+export default SceneProvider;
+export { SceneContext, useScene };

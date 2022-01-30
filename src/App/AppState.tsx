@@ -2,34 +2,22 @@ import { createContext, useContext, useReducer } from 'react';
 
 import Slide from '@arcgis/core/webscene/Slide';
 
-export interface AppState {
-  name: string;
-  webScene: __esri.WebSceneProperties;
+interface AppState {
   slide?: Slide | null;
 }
 
-const defaultState: AppState = {
-  name: '',
-  webScene: {
-    portalItem: {
-      id: '91b46c2b162c48dba264b2190e1dbcff'
-    }
-  }
-};
+const defaultState: AppState = {};
 
-export type Action = { type: 'SELECT_SLIDE'; slide: Slide } | { type: 'DESELECT_SLIDE' };
+type Action = { type: 'SELECT_SLIDE'; slide: Slide };
 
-const AppState = createContext<{ state: AppState; dispatch: React.Dispatch<any> }>({
-  state: defaultState,
-  dispatch: () => null
-});
+type Dispatch = (action: Action) => void;
+
+const AppState = createContext<{ state: AppState; dispatch: Dispatch } | undefined>(undefined);
 
 const mainReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
     case 'SELECT_SLIDE':
       return { ...state, slide: action.slide };
-    case 'DESELECT_SLIDE':
-      return { ...state, slide: null };
     default:
       throw new Error('Invalid action');
   }
@@ -40,7 +28,13 @@ const AppStateProvider: React.FC = ({ children }) => {
   return <AppState.Provider value={{ state, dispatch }}>{children}</AppState.Provider>;
 };
 
-const useAppState = () => useContext(AppState);
+function useAppState() {
+  const ctx = useContext(AppState);
+  if (ctx === undefined) {
+    throw new Error('useAppState must be used within a AppStateProvider');
+  }
+  return ctx;
+}
 
-export default AppState;
-export { AppStateProvider, useAppState };
+export default AppStateProvider;
+export { AppState, useAppState };

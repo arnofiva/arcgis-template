@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
-import { AppStateProvider } from './App/AppState';
+import AppStateProvider from './App/AppState';
 import './global.css';
 
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import WebScene from '@arcgis/core/WebScene';
-import { SceneProvider } from './scene/SceneProvider';
+import SceneProvider from './Scene/SceneProvider';
 
 const webScene = new WebScene({
   portalItem: {
@@ -14,13 +14,11 @@ const webScene = new WebScene({
   }
 });
 
-function Main() {
-  return <SceneProvider map={webScene}>{<App />}</SceneProvider>;
-}
-
 ReactDOM.render(
   <React.StrictMode>
-    <Main></Main>
+    <AppStateProvider>
+      <SceneProvider map={webScene}>{<App />}</SceneProvider>
+    </AppStateProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

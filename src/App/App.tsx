@@ -1,30 +1,46 @@
 import * as styles from './App.module.css';
 
 import { useEffect, useRef } from 'react';
-import SceneView from '@arcgis/core/views/SceneView';
-import WebScene from '@arcgis/core/WebScene';
 
 import '@esri/calcite-components/dist/components/calcite-card';
-import { CalciteCard } from '@esri/calcite-components-react';
-import { useAppState } from './AppState';
 import Scene from '../Scene/Scene';
-import { SceneProvider, useScene } from '../Scene/SceneProvider';
+import { useScene } from '../Scene/SceneProvider';
+import OverlayGlobe from '../OverlayGlobe/OverlayGlobe';
+import Slides from '../Slides/Slides';
+import { useAppState } from './AppState';
+
+console.log('Start App');
 
 export function App() {
-  // const { state } = useScene();
+  const { state: scene } = useScene();
+  const globeDiv = useRef(null);
+  useEffect(() => {
+    const view = scene.view;
+    if (view) {
+      view.ui.add(globeDiv.current!, 'bottom-right');
+    }
+  }, [scene]);
 
-  // useEffect(() => {}, [state]);
+  const { state: appState } = useAppState();
+  useEffect(() => {
+    if (appState.slide && scene.view) {
+      appState.slide.applyTo(scene.view);
+    }
+  }, [appState]);
 
   return (
     <>
-      <p>View: {'Ready?'}</p>
-      <Scene></Scene>
-      <CalciteCard className={styles.card}>
-        <img alt='footer thumbnail' slot='thumbnail' src='./assets/image.jpg' />
-        <h3 slot='title'>A beautiful hiking day</h3>
-        <span slot='subtitle'>Seealpsee region, Switzerland</span>
-        <span slot='footer-leading'>June 20, 2021</span>
-      </CalciteCard>
+      <div className={styles.app}>
+        <div className={styles.slides}>
+          <Slides></Slides>
+        </div>
+        <div className={styles.scene}>
+          <Scene></Scene>
+          <div ref={globeDiv} className={styles.globeDiv}>
+            <OverlayGlobe></OverlayGlobe>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
