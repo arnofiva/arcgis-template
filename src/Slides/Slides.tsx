@@ -25,7 +25,12 @@ export function Slides() {
       const map = view.map as WebScene;
       map.loadAll().then(() => {
         setTitle(map.portalItem.title);
-        setSlides(map.presentation.slides.toArray());
+
+        const slidesArray = map.presentation.slides.toArray();
+        setSlides(slidesArray);
+        if (slidesArray.length) {
+          dispatch({ type: 'SELECT_SLIDE', slide: slidesArray[0] });
+        }
       });
     }
   }, [scene]);
@@ -44,17 +49,28 @@ export function Slides() {
     }
   };
 
-  const slideItems = slides.map((slide, index) => (
-    <CalcitePickListItem
-      key={index}
-      label={slide.title.text}
-      onCalciteListItemChange={onListItemChange}
-      description={slide.description.text}
-      value={slide}
-    >
-      {/* <CalciteAction slot='actions-end' icon='layer'></CalciteAction> */}
-    </CalcitePickListItem>
-  ));
+  const slideItems = slides.map((slide, index) =>
+    appState.slide === slide ? (
+      <CalcitePickListItem
+        key={index}
+        label={slide.title.text}
+        onCalciteListItemChange={onListItemChange}
+        description={slide.description.text}
+        value={slide}
+        selected
+      ></CalcitePickListItem>
+    ) : (
+      <CalcitePickListItem
+        key={index}
+        label={slide.title.text}
+        onCalciteListItemChange={onListItemChange}
+        description={slide.description.text}
+        value={slide}
+      >
+        {/* <CalciteAction slot='actions-end' icon='layer'></CalciteAction> */}
+      </CalcitePickListItem>
+    )
+  );
 
   return (
     <>

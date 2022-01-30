@@ -1,5 +1,11 @@
 import SceneView from '@arcgis/core/views/SceneView';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import PointSymbol3D from '@arcgis/core/symbols/PointSymbol3D';
+import TextSymbol3DLayer from '@arcgis/core/symbols/TextSymbol3DLayer';
+import IconSymbol3DLayer from '@arcgis/core/symbols/IconSymbol3DLayer';
+import * as promiseUtils from '@arcgis/core/core/promiseUtils';
+
 import { useEffect, useRef } from 'react';
 
 import * as style from './OverlayGlobe.module.css';
@@ -33,14 +39,20 @@ const globeProps: __esri.SceneViewProperties = {
 function Globe(props: { view: SceneView }) {
   const { state: globeScene } = useScene();
 
-  const goTo = (target: Point) => {
+  const goTo = async (target: Point) => {
     const globeView = globeScene.view;
     if (globeView) {
-      globeView.goTo({
-        target,
-        heading: 0
-      });
+      try {
+        await globeView.goTo({
+          target,
+          heading: 0
+        });
+      } catch {
+        /* Ignore concurrent calls to goTo */
+      }
+      return globeView;
     }
+    throw new Error();
   };
 
   useEffect(() => {
@@ -59,8 +71,40 @@ function Globe(props: { view: SceneView }) {
 
   const { state: appState } = useAppState();
   useEffect(() => {
-    if (appState.slide) {
-      goTo(appState.slide.viewpoint.camera.position);
+    const slide = appState.slide;
+    if (slide) {
+      (async () => {
+        const point = slide.viewpoint.camera.position;
+
+        const globeView = await goTo(point);
+        globeView.graphics.removeAll();
+        globeView.graphics.add(
+          new Graphic({
+            geometry: point,
+            symbol: new PointSymbol3D({
+              symbolLayers: [
+                new IconSymbol3DLayer({
+                  resource: {
+                    primitive: 'circle'
+                  },
+                  material: {
+                    color: 'black'
+                  },
+                  size: '4px'
+                }),
+                new TextSymbol3DLayer({
+                  text: `${slide.title.text}\n `,
+
+                  material: {
+                    color: 'black'
+                  },
+                  size: 6
+                })
+              ]
+            })
+          })
+        );
+      })();
     }
   }, [appState]);
 
