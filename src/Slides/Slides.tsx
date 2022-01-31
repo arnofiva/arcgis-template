@@ -8,7 +8,7 @@ import '@esri/calcite-components/dist/components/calcite-pick-list';
 import '@esri/calcite-components/dist/components/calcite-pick-list-item';
 import { CalciteButton, CalcitePanel, CalcitePickList, CalcitePickListItem } from '@esri/calcite-components-react';
 
-import { useScene } from '../Scene/SceneProvider';
+import { useScene, useWebScene } from '../Scene/SceneProvider';
 import WebScene from '@arcgis/core/WebScene';
 import Slide from '@arcgis/core/webscene/Slide';
 import { useAppState } from '../App/AppState';
@@ -16,23 +16,20 @@ import { useAppState } from '../App/AppState';
 export function Slides() {
   const [title, setTitle] = useState('');
   const [slides, setSlides] = useState([] as Slide[]);
-  const { state: scene } = useScene();
+  const { state: scene } = useWebScene();
   const { state: appState, dispatch } = useAppState();
 
   useEffect(() => {
-    const view = scene.view;
-    if (view && view.map && (view.map as WebScene).presentation) {
-      const map = view.map as WebScene;
-      map.loadAll().then(() => {
-        setTitle(map.portalItem.title);
+    const map = scene.map;
+    map.loadAll().then(() => {
+      setTitle(map.portalItem.title);
 
-        const slidesArray = map.presentation.slides.toArray();
-        setSlides(slidesArray);
-        if (slidesArray.length) {
-          dispatch({ type: 'SELECT_SLIDE', slide: slidesArray[0] });
-        }
-      });
-    }
+      const slidesArray = map.presentation.slides.toArray();
+      setSlides(slidesArray);
+      if (slidesArray.length) {
+        dispatch({ type: 'SELECT_SLIDE', slide: slidesArray[0] });
+      }
+    });
   }, [scene]);
 
   const onListItemChange = (
