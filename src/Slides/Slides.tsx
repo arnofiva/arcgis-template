@@ -69,14 +69,30 @@ export function Slides() {
     )
   );
 
+  function nextSlide() {
+    if (appState.slide) {
+      const currentIndex = slides.indexOf(appState.slide);
+      const nextIndex = (currentIndex + 1) % slides.length;
+      dispatch({ type: 'SELECT_SLIDE', slide: slides[nextIndex] });
+    }
+  }
+
+  function previousSlide() {
+    if (appState.slide) {
+      const currentIndex = slides.indexOf(appState.slide);
+      const previousIndex = (currentIndex - 1 >= 0) ? currentIndex - 1 : slides.length - 1;
+      dispatch({ type: 'SELECT_SLIDE', slide: slides[previousIndex] });
+    }
+  }
+
   return (
     <>
       <CalcitePanel heading={title} className={style.panel}>
         <CalcitePickList>{slideItems}</CalcitePickList>
-        <CalciteButton width='half' slot='footer-actions' appearance='outline'>
+        <CalciteButton width='half' slot='footer-actions' appearance='outline' onClick={previousSlide}>
           Previous
         </CalciteButton>
-        <CalciteButton width='half' slot='footer-actions'>
+        <CalciteButton width='half' slot='footer-actions' onClick={nextSlide}>
           Next
         </CalciteButton>
       </CalcitePanel>
