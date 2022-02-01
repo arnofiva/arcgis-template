@@ -1,0 +1,9 @@
+
+.overlayGlobe {
+  width: max(20vh, 20vw);
+  height: max(20vh, 20vw);
+}
+
+.overlayGlobe canvas {
+  filter: drop-shadow(16px 16px 10px rgba(0,0,0, 0.5));
+}
